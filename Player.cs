@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
         // check if space key is pressed down.
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            
+            Debug.Log("Space KEy Was Pressed Down");
         }
     }
 }
