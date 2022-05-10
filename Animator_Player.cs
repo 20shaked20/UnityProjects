@@ -22,10 +22,13 @@ public class Animator_Player : MonoBehaviour
     private bool isGrounded;
     private bool isFalling;
     private bool isRunning;
+    private bool isCrouching;
     private bool isAttacking;
     private float lastGroundedTime;
     private float jumpButtonPressedTime;
     private float xRotation;
+
+    private bool first_time = false; /*temp fix for jump when starting the game*/
 
     private int coins_collected;
 
@@ -73,6 +76,9 @@ public class Animator_Player : MonoBehaviour
         }
         /*Run check*/
         IsRunning();
+
+        /*Crouch check*/
+        IsCrouching();
         
         /*Jump Check*/
         Jump();
@@ -150,11 +156,7 @@ public class Animator_Player : MonoBehaviour
     {
         if(movementDirection !=Vector3.zero && Input.GetKey(KeyCode.LeftShift))
         {
-            // inputMagnitude  /= 2 ;
             animator.SetBool("IsRunning",true);
-            // isRunning = true;
-            // animator.SetBool("IsMoving",false);
-            // isMoving = false;
             Vector3 velocity = characterContoller.velocity * RunSpeed;
 
             characterContoller.SimpleMove(velocity);
@@ -162,17 +164,15 @@ public class Animator_Player : MonoBehaviour
         }else
         {
             animator.SetBool("IsRunning",false);
-            // isRunning = false;
-            // animator.SetBool("IsMoving",true);
-            // isMoving = true;
         }
     }
 
     private void Jump()
     {
-        if(Input.GetButtonDown("Jump"))
+        if(Input.GetKey(KeyCode.Space))
         {
             jumpButtonPressedTime = Time.time;
+            first_time = true;
         }
 
         if(Time.time - lastGroundedTime <= jumpButtonGracePeriod) 
@@ -180,12 +180,12 @@ public class Animator_Player : MonoBehaviour
             characterContoller.stepOffset = originalStepOffset;
             yspeed = -0.5f;
             animator.SetBool("IsGrounded",true);
-            isGrounded = true ;
+            isGrounded = true;
             animator.SetBool("IsJumping",false);
             isJumping = false;
             animator.SetBool("IsFalling",false);
 
-            if(Time.time - jumpButtonPressedTime <= jumpButtonGracePeriod) 
+            if((Time.time - jumpButtonPressedTime <= jumpButtonGracePeriod) && first_time) 
             {
                 yspeed = jumpSpeed;
                 animator.SetBool("IsJumping", true);
@@ -193,7 +193,8 @@ public class Animator_Player : MonoBehaviour
                 jumpButtonPressedTime = 0;
                 lastGroundedTime = 0;
             }
-        }else
+        }
+        else
         {
             characterContoller.stepOffset = 0;
             animator.SetBool("IsGrounded",false);
@@ -202,6 +203,23 @@ public class Animator_Player : MonoBehaviour
             if((isJumping && yspeed < 0) || yspeed < -2) 
             {
                 animator.SetBool("IsFalling",true);
+            }
+        }
+    }
+
+    private void IsCrouching(){
+        
+        if(Input.GetKey(KeyCode.C))
+        {   
+            if(isCrouching == false){
+                animator.SetBool("IsCrouching",true);
+                isCrouching = true;
+                // characterContoller.height = 1.8f;
+            }else{
+                animator.SetBool("IsCrouching", false);
+                isCrouching = false;
+                // characterContoller.height = 1.25f;
+
             }
         }
     }
