@@ -91,6 +91,8 @@ public class Animator_Player : MonoBehaviour
 
         /*Attacks*/
         IsAttacking();
+
+        /*Interaction*/
         
         if(isGrounded == false)
         {
