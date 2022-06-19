@@ -12,6 +12,7 @@ public class Animator_Player : MonoBehaviour
     [SerializeField] private float RunSpeed;
     [Space]
 
+    /*movement*/
     private Vector2 PlayerMouseInput;
     private Vector3 movementDirection;
     private Animator animator;
@@ -28,11 +29,18 @@ public class Animator_Player : MonoBehaviour
     private float jumpButtonPressedTime;
     private float xRotation;
 
-    private bool first_time = false; /*temp fix for jump when starting the game*/
+    /*npc handle */
+    private GameObject npc_object;
+    private bool npc_trigger;
 
+    [SerializeField] private GameObject npcInteract;
+
+    /*temp fix for jump when starting the game*/
+    private bool first_time = false; 
+
+    /*item collection trigger*/
     private int coins_collected;
-
-    // Start is called before the first frame update
+    
     void Start()
     {   
         animator = GetComponent<Animator>();
@@ -93,6 +101,20 @@ public class Animator_Player : MonoBehaviour
         IsAttacking();
 
         /*Interaction*/
+
+        if(npc_trigger)
+        {
+            npcInteract.SetActive(true);
+
+            if(Input.GetKeyDown(KeyCode.E))
+            {
+                print("Hello traveller!");
+            }
+        }
+        else
+        {
+            npcInteract.SetActive(false);
+        }
         
         if(isGrounded == false)
         {
@@ -255,11 +277,29 @@ public class Animator_Player : MonoBehaviour
 
     // coin collector method
     private void OnTriggerEnter(Collider other)
-    {
+    {   
+        /*object pickup*/
         if(other.gameObject.layer == 7)
         {
             Destroy(other.gameObject);
             coins_collected++;
-        }    
+        } 
+
+        /*npc interaction*/
+        if(other.tag == "Enemy")
+        {
+            npc_trigger = true;
+            npc_object = other.gameObject;
+        }  
+    }
+
+    private void OnTriggerExit(Collider other)
+    {   
+        /*if we done with npc*/
+        if(other.tag == "Enemy")
+        {
+            npc_trigger = false;
+            npc_object = null;
+        }
     }
 }
