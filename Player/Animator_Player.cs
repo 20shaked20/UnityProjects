@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Animator_Player : MonoBehaviour
 {   
+    /*visual*/
     [SerializeField] Transform PlayerCamera;
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float jumpButtonGracePeriod;
@@ -10,6 +11,9 @@ public class Animator_Player : MonoBehaviour
     [SerializeField] private float jumpHorizontalSpeed;
     [SerializeField] private float Sensitivty;
     [SerializeField] private float RunSpeed;
+
+    [SerializeField] private InventoryObject inventory;
+    
     [Space]
 
     /*movement*/
