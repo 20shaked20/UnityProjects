@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8459a074de8e9d429fe7e32ca6b7370, type: 3}
   m_Name: Sword 2
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 4211196286944384146, guid: 998b40607e79e4c4db7fdb4c4004e779, type: 3}
   type: 1
   description: A second generation sword for slashing your foes
   atkBonus: 20

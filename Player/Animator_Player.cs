@@ -283,11 +283,12 @@ public class Animator_Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {   
         /*object pickup*/
-        if(other.gameObject.layer == 7)
+        var item = other.GetComponent<Item>();
+        if(item)
         {
+            inventory.AddItem(item.item,1);
             Destroy(other.gameObject);
-            coins_collected++;
-        } 
+        }
 
         /*npc interaction*/
         if(other.tag == "Enemy")
@@ -305,5 +306,12 @@ public class Animator_Player : MonoBehaviour
             npc_trigger = false;
             npc_object = null;
         }
+    }
+
+    private void OnApplicationQuit()
+    {   
+        /*this will remove all items in inventory when game quits, will remove later*/
+        // inventory.Container.Clear();
+
     }
 }
