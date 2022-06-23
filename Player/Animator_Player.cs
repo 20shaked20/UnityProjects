@@ -119,6 +119,9 @@ public class Animator_Player : MonoBehaviour
         {
             npcInteract.SetActive(false);
         }
+
+        /*save&load*/
+        Save_Load();
         
         if(isGrounded == false)
         {
@@ -131,6 +134,18 @@ public class Animator_Player : MonoBehaviour
         MovePlayerCamera();
     
 }
+
+    private void Save_Load()
+    {
+        if(Input.GetKeyDown(KeyCode.F5))
+        {
+            inventory.Save();
+        }
+        if(Input.GetKeyDown(KeyCode.F6))
+        {
+            inventory.Load();
+        }
+    }
 
     private void Forward()
     {
@@ -311,7 +326,7 @@ public class Animator_Player : MonoBehaviour
     private void OnApplicationQuit()
     {   
         /*this will remove all items in inventory when game quits, will remove later*/
-        // inventory.Container.Clear();
+        inventory.Container.Clear();
 
     }
 }
