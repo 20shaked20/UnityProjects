@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91fc671e26a26934e8ffdb4a99154754, type: 3}
-  m_Name: Monkfish
+  m_Name: HealthPotion
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2666707205726323052, guid: e490a870620470046b6f0ed989635970, type: 3}
+  Id: 2
+  uiDisplay: {fileID: 21300000, guid: e52ea25af699fd445b7046374f81a5b9, type: 3}
   type: 0
-  description: 'Can be fished in various lakes across the world.
-
-'
-  restoreHealthValue: 16
+  description: 
+  buffs: []

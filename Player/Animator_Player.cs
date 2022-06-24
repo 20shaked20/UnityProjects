@@ -298,10 +298,10 @@ public class Animator_Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {   
         /*object pickup*/
-        var item = other.GetComponent<Item>();
+        var item = other.GetComponent<GroundItem>();
         if(item)
         {
-            inventory.AddItem(item.item,1);
+            inventory.AddItem(new Item(item.item),1);
             Destroy(other.gameObject);
         }
 
@@ -326,7 +326,7 @@ public class Animator_Player : MonoBehaviour
     private void OnApplicationQuit()
     {   
         /*this will remove all items in inventory when game quits, will remove later*/
-        inventory.Container.Clear();
+        inventory.Container.Items.Clear();
 
     }
 }

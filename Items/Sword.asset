@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8459a074de8e9d429fe7e32ca6b7370, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4767158444053743221, guid: d03f76e8e4562e048884c6b71cf24d43, type: 3}
+  Id: 4
+  uiDisplay: {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
   type: 1
-  description: Begginers sword
-  atkBonus: 10
-  defenceBonus: 0
+  description: 
+  buffs:
+  - attribute: 3
+    value: 0
+    min: 10
+    max: 20
