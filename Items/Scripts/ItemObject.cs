@@ -22,6 +22,8 @@ public abstract class ItemObject : ScriptableObject
     public Sprite uiDisplay; /*the image of the object*/
     public ItemType type;
 
+    public GameObject groundItem; /*3d pickup object*/
+
     [TextArea(15,20)]
     public string description;
     public ItemBuff[] buffs;
