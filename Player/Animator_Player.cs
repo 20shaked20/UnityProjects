@@ -29,6 +29,7 @@ public class Animator_Player : MonoBehaviour
     private bool isRunning;
     private bool isCrouching;
     private bool isAttacking;
+    private bool isSwimming;
     private float lastGroundedTime;
     private float jumpButtonPressedTime;
     private float xRotation;
@@ -104,6 +105,9 @@ public class Animator_Player : MonoBehaviour
         /*Attacks*/
         IsAttacking();
 
+        /*Swim*/
+        Is_Swimming();
+
         /*Interaction*/
 
         if(npc_trigger)
@@ -145,6 +149,14 @@ public class Animator_Player : MonoBehaviour
         {
             inventory.Load();
         }
+    }
+
+    private void Is_Swimming()
+    {
+       if(isSwimming)
+       {
+           /*do something with gravity*/
+       }
     }
 
     private void Forward()
@@ -310,6 +322,14 @@ public class Animator_Player : MonoBehaviour
         {
             npc_trigger = true;
             npc_object = other.gameObject;
+        }
+
+        /*swimming*/
+        if(other.tag == "Water")
+        {
+            animator.SetTrigger("InWater");
+            animator.SetBool("IsSwim",true);
+            isSwimming = true;
         }  
     }
 
@@ -321,12 +341,19 @@ public class Animator_Player : MonoBehaviour
             npc_trigger = false;
             npc_object = null;
         }
+
+        /*swimming done*/
+        if(other.tag == "Water")
+        {
+            animator.SetBool("IsSwim",false);
+            isSwimming = false;
+        }
     }
 
     private void OnApplicationQuit()
     {   
         /*this will remove all items in inventory when game quits, will remove later*/
-        inventory.Container.Items.Clear();
+        inventory.Container.Items = new InventorySlot[28];
 
     }
 }

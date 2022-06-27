@@ -19,8 +19,12 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 
         /*3d*/
         GetComponentInChildren<MeshFilter>().mesh = item.groundItem.GetComponent<MeshFilter>().sharedMesh;
+#if UNITY_EDITOR
         EditorUtility.SetDirty(GetComponentInChildren<MeshFilter>());
+#endif
         GetComponentInChildren<MeshRenderer>().material = item.groundItem.GetComponent<MeshRenderer>().sharedMaterial;
+#if UNITY_EDITOR
         EditorUtility.SetDirty(GetComponentInChildren<MeshRenderer>());
+#endif
     }
 }

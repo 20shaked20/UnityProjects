@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Meat
   m_EditorClassIdentifier: 
   Id: 3
-  uiDisplay: {fileID: 21300000, guid: 4a39cb4b272639541b7bd5ac0649acf7, type: 3}
+  uiDisplay: {fileID: 21300000, guid: e8875cefe289ed941b04daf49ccb3ae4, type: 3}
   type: 0
+  groundItem: {fileID: 2921134319588251144, guid: 16acbe5bed5d99944a567da1b7fcb438, type: 3}
   description: 
   buffs: []
