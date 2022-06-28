@@ -117,7 +117,7 @@ public class Inventory
 [System.Serializable]
 public class InventorySlot
 {
-    public int ID;
+    public int ID = -1;
     public Item item;
     public int amount;
 

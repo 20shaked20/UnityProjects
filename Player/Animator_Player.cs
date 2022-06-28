@@ -312,8 +312,9 @@ public class Animator_Player : MonoBehaviour
         /*object pickup*/
         var item = other.GetComponent<GroundItem>();
         if(item)
-        {
-            inventory.AddItem(new Item(item.item),1);
+        {   
+            Item _item = new Item(item.item);
+            inventory.AddItem(_item,1);
             Destroy(other.gameObject);
         }
 
