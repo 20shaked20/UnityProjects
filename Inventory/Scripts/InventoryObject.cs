@@ -17,13 +17,13 @@ public class InventoryObject : ScriptableObject
 
     /*this method adds an items to the inventory, if one exists it will increase its amount*/
     public void AddItem(Item _item, int _amount)
-    {   
+    {
 
         /*simple fix for not stacking diffrenet items!*/
         /*TODO: fix this later*/
-        if(_item.buffs.Length > 0)
+        if (_item.buffs.Length > 0)
         {
-            SetEmptySlot(_item,_amount);
+            SetEmptySlot(_item, _amount);
             return;
         }
 
@@ -35,14 +35,14 @@ public class InventoryObject : ScriptableObject
                 return;
             }
         }
-        SetEmptySlot(_item,_amount);
+        SetEmptySlot(_item, _amount);
     }
 
     public InventorySlot SetEmptySlot(Item _item, int _amount)
     {
         for (int i = 0; i < Container.Items.Length; i++)
         {
-            if(Container.Items[i].ID <= -1)
+            if (Container.Items[i].ID <= -1)
             {
                 Container.Items[i].UpdateSlot(_item.Id, _item, _amount);
                 return Container.Items[i];
@@ -51,6 +51,26 @@ public class InventoryObject : ScriptableObject
 
         /*return later, when inventory is full what to do*/
         return null;
+    }
+
+    public void MoveItem(InventorySlot item1, InventorySlot item2)
+    {
+        /* simple SWAP method for items */
+        InventorySlot temp = new InventorySlot(item2.ID, item2.item, item2.amount);
+        item2.UpdateSlot(item1.ID, item1.item, item1.amount);
+        item1.UpdateSlot(temp.ID, temp.item, temp.amount);
+    }
+
+    public void RemoveItem(Item _item)
+    {
+        /*removing item from inventory database*/
+        for (int i = 0; i < Container.Items.Length; i++)
+        {
+            if(Container.Items[i].item == _item)
+            {
+                Container.Items[i].UpdateSlot(-1,null,0);
+            }
+        }
     }
 
 
@@ -92,7 +112,12 @@ public class InventoryObject : ScriptableObject
             /*second approach - does not allows for item changes*/
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open, FileAccess.Read);
-            Container = (Inventory)formatter.Deserialize(stream);
+            Inventory newContainer = (Inventory)formatter.Deserialize(stream);
+            /*loading each slot again from the save slot*/
+            for (int i = 0; i < Container.Items.Length; i++)
+            {
+                Container.Items[i].UpdateSlot(newContainer.Items[i].ID, newContainer.Items[i].item, newContainer.Items[i].amount);
+            }
             stream.Close();
         }
     }
