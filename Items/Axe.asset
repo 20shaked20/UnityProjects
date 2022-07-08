@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 5
   uiDisplay: {fileID: 21300000, guid: 172774604c1bee84185a69041576525b, type: 3}
-  type: 1
+  type: 2
   groundItem: {fileID: 1607733019209590, guid: 5a367ff7fe2957344b0564bf2655256e, type: 3}
   description: "\t"
   buffs:

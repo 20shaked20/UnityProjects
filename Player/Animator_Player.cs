@@ -2,9 +2,14 @@ using Cinemachine;
 using UnityEngine;
 
 public class Animator_Player : MonoBehaviour
-{   
+{
+
+    /*to be changed later*/
+    public MouseItem mouseItem = new MouseItem();
+
     /*visual*/
     [SerializeField] Transform PlayerCamera;
+
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float jumpButtonGracePeriod;
     [SerializeField] private float rotationSpeed;
@@ -13,7 +18,7 @@ public class Animator_Player : MonoBehaviour
     [SerializeField] private float RunSpeed;
 
     [SerializeField] private InventoryObject inventory;
-    
+
     [Space]
 
     /*movement*/
@@ -34,6 +39,11 @@ public class Animator_Player : MonoBehaviour
     private float jumpButtonPressedTime;
     private float xRotation;
 
+    /*show inventory*/
+    private bool in_inventory = false;
+    [SerializeField] private GameObject InventoryWindow;
+    [SerializeField] private GameObject EquipmentWindow;
+
     /*npc handle */
     private GameObject npc_object;
     private bool npc_trigger;
@@ -41,22 +51,26 @@ public class Animator_Player : MonoBehaviour
     [SerializeField] private GameObject npcInteract;
 
     /*temp fix for jump when starting the game*/
-    private bool first_time = false; 
+    private bool first_time = false;
 
     /*item collection trigger*/
     private int coins_collected;
-    
+
     void Start()
-    {   
+    {
         animator = GetComponent<Animator>();
         characterContoller = GetComponent<CharacterController>();
 
         originalStepOffset = characterContoller.stepOffset;
+
+        /*startups for setting false objects*/
+        InventoryWindow.SetActive(false);
+        EquipmentWindow.SetActive(false);
     }
 
     private void MovePlayerCamera()
     {
-        
+
         xRotation -= PlayerMouseInput.y * Sensitivty;
 
         transform.Rotate(0f, PlayerMouseInput.x * Sensitivty, 0f);
@@ -83,7 +97,7 @@ public class Animator_Player : MonoBehaviour
 
         yspeed += Physics.gravity.y * Time.deltaTime;
 
-        if(characterContoller.isGrounded) 
+        if (characterContoller.isGrounded)
         {
             lastGroundedTime = Time.time;
         }
@@ -92,7 +106,7 @@ public class Animator_Player : MonoBehaviour
 
         /*Crouch check*/
         IsCrouching();
-        
+
         /*Jump Check*/
         Jump();
 
@@ -110,11 +124,11 @@ public class Animator_Player : MonoBehaviour
 
         /*Interaction*/
 
-        if(npc_trigger)
+        if (npc_trigger)
         {
             npcInteract.SetActive(true);
 
-            if(Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 print("Hello traveller!");
             }
@@ -124,28 +138,50 @@ public class Animator_Player : MonoBehaviour
             npcInteract.SetActive(false);
         }
 
+        /*pop up inv window*/
+        if (!in_inventory)
+        {
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                InventoryWindow.SetActive(true);
+                EquipmentWindow.SetActive(true);
+                in_inventory = true;
+            }
+
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                InventoryWindow.SetActive(false);
+                EquipmentWindow.SetActive(false);
+                in_inventory = false;
+            }
+
+        }
+
         /*save&load*/
         Save_Load();
-        
-        if(isGrounded == false)
+
+        if (isGrounded == false)
         {
             Vector3 velocity = movementDirection * inputMagnitude * jumpHorizontalSpeed;
             velocity.y = yspeed;
 
             characterContoller.Move(velocity * Time.deltaTime);
         }
-       
+
         MovePlayerCamera();
-    
-}
+
+    }
 
     private void Save_Load()
     {
-        if(Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.F5))
         {
             inventory.Save();
         }
-        if(Input.GetKeyDown(KeyCode.F6))
+        if (Input.GetKeyDown(KeyCode.F6))
         {
             inventory.Load();
         }
@@ -153,94 +189,95 @@ public class Animator_Player : MonoBehaviour
 
     private void Is_Swimming()
     {
-       if(isSwimming)
-       {
-           /*do something with gravity*/
-       }
+        if (isSwimming)
+        {
+            /*do something with gravity*/
+        }
     }
 
     private void Forward()
     {
-        if(movementDirection != Vector3.zero && Input.GetKey(KeyCode.W))
+        if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.W))
         {
             animator.SetBool("Forward", true);
         }
         else
         {
-            animator.SetBool("Forward",false);
+            animator.SetBool("Forward", false);
         }
     }
 
     private void Backwards()
     {
-        if(movementDirection != Vector3.zero && Input.GetKey(KeyCode.S))
+        if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.S))
         {
             animator.SetBool("Backwards", true);
         }
         else
         {
-            animator.SetBool("Backwards",false);
+            animator.SetBool("Backwards", false);
         }
     }
 
     private void Left()
     {
-        if(movementDirection != Vector3.zero && Input.GetKey(KeyCode.A))
+        if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.A))
         {
-            animator.SetBool("Left",true);
+            animator.SetBool("Left", true);
         }
         else
         {
-            animator.SetBool("Left",false);
+            animator.SetBool("Left", false);
         }
     }
-    
+
     private void Right()
     {
-        if(movementDirection != Vector3.zero && Input.GetKey(KeyCode.D))
+        if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.D))
         {
-            animator.SetBool("Right",true);
+            animator.SetBool("Right", true);
         }
         else
         {
-            animator.SetBool("Right",false);
+            animator.SetBool("Right", false);
         }
     }
 
     private void IsRunning()
     {
-        if(movementDirection !=Vector3.zero && Input.GetKey(KeyCode.LeftShift))
+        if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
         {
-            animator.SetBool("IsRunning",true);
+            animator.SetBool("IsRunning", true);
             Vector3 velocity = characterContoller.velocity * RunSpeed;
 
             characterContoller.SimpleMove(velocity);
 
-        }else
+        }
+        else
         {
-            animator.SetBool("IsRunning",false);
+            animator.SetBool("IsRunning", false);
         }
     }
 
     private void Jump()
     {
-        if(Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             jumpButtonPressedTime = Time.time;
             first_time = true;
         }
 
-        if(Time.time - lastGroundedTime <= jumpButtonGracePeriod) 
+        if (Time.time - lastGroundedTime <= jumpButtonGracePeriod)
         {
             characterContoller.stepOffset = originalStepOffset;
             yspeed = -0.5f;
-            animator.SetBool("IsGrounded",true);
+            animator.SetBool("IsGrounded", true);
             isGrounded = true;
-            animator.SetBool("IsJumping",false);
+            animator.SetBool("IsJumping", false);
             isJumping = false;
-            animator.SetBool("IsFalling",false);
+            animator.SetBool("IsFalling", false);
 
-            if((Time.time - jumpButtonPressedTime <= jumpButtonGracePeriod) && first_time) 
+            if ((Time.time - jumpButtonPressedTime <= jumpButtonGracePeriod) && first_time)
             {
                 yspeed = jumpSpeed;
                 animator.SetBool("IsJumping", true);
@@ -252,25 +289,29 @@ public class Animator_Player : MonoBehaviour
         else
         {
             characterContoller.stepOffset = 0;
-            animator.SetBool("IsGrounded",false);
+            animator.SetBool("IsGrounded", false);
             isGrounded = false;
 
-            if((isJumping && yspeed < 0) || yspeed < -2) 
+            if ((isJumping && yspeed < 0) || yspeed < -2)
             {
-                animator.SetBool("IsFalling",true);
+                animator.SetBool("IsFalling", true);
             }
         }
     }
 
-    private void IsCrouching(){
-        
-        if(Input.GetKey(KeyCode.C))
-        {   
-            if(isCrouching == false){
-                animator.SetBool("IsCrouching",true);
+    private void IsCrouching()
+    {
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            if (isCrouching == false)
+            {
+                animator.SetBool("IsCrouching", true);
                 isCrouching = true;
                 // characterContoller.height = 1.8f;
-            }else{
+            }
+            else
+            {
                 animator.SetBool("IsCrouching", false);
                 isCrouching = false;
                 // characterContoller.height = 1.25f;
@@ -281,78 +322,79 @@ public class Animator_Player : MonoBehaviour
 
     private void IsAttacking()
     {
-        if(Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0))
         {
-            animator.SetBool("IsAttacking",true);
+            animator.SetBool("IsAttacking", true);
             // isAttacking = true;
 
-        }else
+        }
+        else
         {
             animator.SetBool("IsAttacking", false);
             // isAttacking = false;
-            
+
         }
     }
 
 
     private void OnAnimatorMove()
     {
-        if(isGrounded)
+        if (isGrounded)
         {
             Vector3 velocity = animator.deltaPosition;
             velocity.y = yspeed * Time.deltaTime;
 
-            characterContoller.Move(velocity);  
+            characterContoller.Move(velocity);
         }
     }
 
     // coin collector method
     private void OnTriggerEnter(Collider other)
-    {   
+    {
         /*object pickup*/
         var item = other.GetComponent<GroundItem>();
-        if(item)
-        {   
+        if (item)
+        {
             Item _item = new Item(item.item);
-            inventory.AddItem(_item,1);
+            inventory.AddItem(_item, 1);
             Destroy(other.gameObject);
         }
 
         /*npc interaction*/
-        if(other.tag == "Enemy")
+        if (other.tag == "Enemy")
         {
             npc_trigger = true;
             npc_object = other.gameObject;
         }
 
         /*swimming*/
-        if(other.tag == "Water")
+        if (other.tag == "Water")
         {
             animator.SetTrigger("InWater");
-            animator.SetBool("IsSwim",true);
+            animator.SetBool("IsSwim", true);
             isSwimming = true;
-        }  
+        }
     }
 
     private void OnTriggerExit(Collider other)
-    {   
+    {
         /*if we done with npc*/
-        if(other.tag == "Enemy")
+        if (other.tag == "Enemy")
         {
             npc_trigger = false;
             npc_object = null;
         }
 
         /*swimming done*/
-        if(other.tag == "Water")
+        if (other.tag == "Water")
         {
-            animator.SetBool("IsSwim",false);
+            animator.SetBool("IsSwim", false);
             isSwimming = false;
         }
     }
 
     private void OnApplicationQuit()
-    {   
+    {
         /*this will remove all items in inventory when game quits, will remove later*/
         inventory.Container.Items = new InventorySlot[28];
 

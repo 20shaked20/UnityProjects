@@ -125,7 +125,7 @@ public class InventoryObject : ScriptableObject
     [ContextMenu("Clear")]
     public void ClearInventory()
     {
-        Container = new Inventory();
+        Container.Clear();
     }
 
 }
@@ -135,13 +135,22 @@ public class InventoryObject : ScriptableObject
 public class Inventory
 {
     public InventorySlot[] Items = new InventorySlot[28];
+    public void Clear()
+    {
+        for (int i = 0; i < Items.Length; i++)
+        {
+            Items[i].UpdateSlot(-1,new Item(),0);
+        }
+    }
 }
 
 
 /*this class handles the inventory slots*/
 [System.Serializable]
 public class InventorySlot
-{
+{   
+    public ItemType[] AllowedItems = new ItemType[0]; /*used in static mainly part 6 23:15 for dynamic maybe*/
+    public UserInterface parent; /*we use it to help us drag the item from inventory to the equipment inv!*/
     public int ID = -1;
     public Item item;
     public int amount;
@@ -169,5 +178,21 @@ public class InventorySlot
     public void AddAmount(int value)
     {
         amount += value;
+    }
+
+    public bool CanPlaceInSlot(ItemObject _item)
+    {
+        if(AllowedItems.Length <=0)
+        {
+            return true;
+        }
+        for (int i = 0; i < AllowedItems.Length; i++)
+        {
+            if(_item.type == AllowedItems[i])
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
