@@ -27,6 +27,8 @@ public abstract class UserInterface : MonoBehaviour
             inventory.Container.Items[i].parent = this;
         }
         CreateSlots();
+        // AddEvent(gameObject, EventTriggerType.PointerEnter, delegate { OnEnterInterface(gameObject); });
+        // AddEvent(gameObject, EventTriggerType.PointerExit, delegate { OnExitInterface(gameObject); });
     }
 
     // Update is called once per frame
@@ -86,6 +88,11 @@ public abstract class UserInterface : MonoBehaviour
             player.mouseItem.hoverItem = itemsDisplayed[obj];
         }
     }
+    // public void OnEnterInterface(GameObject obj)
+    // {
+    //     player.mouseItem.ui = obj.GetComponent<UserInterface>();
+
+    // }
     public void OnExit(GameObject obj)
     {
         /*reset the on enter method*/
@@ -93,6 +100,11 @@ public abstract class UserInterface : MonoBehaviour
         player.mouseItem.hoverItem = null;
 
     }
+    // public void OnExitInterface(GameObject obj)
+    // {
+    //     player.mouseItem.ui = null;
+    // }
+
     public void OnDragStart(GameObject obj)
     {
         var mouseObject = new GameObject();
@@ -119,17 +131,22 @@ public abstract class UserInterface : MonoBehaviour
         var mouseHoverObj = itemOnMouse.hoverObj;
         var GetItemObject = inventory.database.GetItem;
 
-        if (mouseHoverObj)
-        {
-            if (mouseHoverItem.CanPlaceInSlot(GetItemObject[itemsDisplayed[obj].ID]))
+        // if (itemOnMouse.ui != null)
+        // {
+            if (mouseHoverObj)
             {
-                inventory.MoveItem(itemsDisplayed[obj], mouseHoverItem.parent.itemsDisplayed[itemOnMouse.hoverObj]);
+                /* the && does not allows for items that swapped to be placed randomly, 
+                meaning if an equipment item is swapped with food it wont place food on equipement.*/
+                if (mouseHoverItem.CanPlaceInSlot(GetItemObject[itemsDisplayed[obj].ID]) && (mouseHoverItem.item.Id <= -1 || (mouseHoverItem.item.Id >= 0 && itemsDisplayed[obj].CanPlaceInSlot(GetItemObject[mouseHoverItem.item.Id]))))
+                {
+                    inventory.MoveItem(itemsDisplayed[obj], mouseHoverItem.parent.itemsDisplayed[itemOnMouse.hoverObj]);
+                }
             }
-        }
+        // }
         else
         {
             /*this removes item if not placed in slot*/
-            // inventory.RemoveItem(itemsDisplayed[obj].item);
+            inventory.RemoveItem(itemsDisplayed[obj].item);
         }
         /*making sure item wont stick to screen*/
         Destroy(itemOnMouse.obj);
@@ -153,6 +170,7 @@ public abstract class UserInterface : MonoBehaviour
  might be changed later..*/
 public class MouseItem
 {
+    public UserInterface ui;
     public GameObject obj;
     public InventorySlot item;
     public InventorySlot hoverItem;
