@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68c17c558ac206d40ae15e4f0777c04f, type: 3}
+  m_Name: Merchant John
+  m_EditorClassIdentifier: 
+  avatar: {fileID: 0}
+  speakerName: Merchant John
+  sentences:
+  - Hello Traveller, Welcome to Brigdeburk
+  - "If you are looking for rumors, \nvisit the nearest inn, talk to Brook."
+  clips:
+  - {fileID: 8300000, guid: 1a0c32b0ef7b71d429b042a65a231c16, type: 3}
+  - {fileID: 8300000, guid: d5c9d4068b683d64c9fb2a4125588d35, type: 3}
+  speakerPrefab: {fileID: 3339443549590233518, guid: 92d0fdba2285db34d8b8a5bca7f0ed9b, type: 3}

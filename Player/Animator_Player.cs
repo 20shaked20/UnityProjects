@@ -101,42 +101,6 @@ public class Animator_Player : MonoBehaviour
         {
             lastGroundedTime = Time.time;
         }
-        /*Run check*/
-        IsRunning();
-
-        /*Crouch check*/
-        IsCrouching();
-
-        /*Jump Check*/
-        Jump();
-
-        /*Move Checkers*/
-        Forward();
-        Backwards();
-        Left();
-        Right();
-
-        /*Attacks*/
-        IsAttacking();
-
-        /*Swim*/
-        Is_Swimming();
-
-        /*Interaction*/
-
-        if (npc_trigger)
-        {
-            npcInteract.SetActive(true);
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                print("Hello traveller!");
-            }
-        }
-        else
-        {
-            npcInteract.SetActive(false);
-        }
 
         /*pop up inv window*/
         if (!in_inventory)
@@ -147,7 +111,43 @@ public class Animator_Player : MonoBehaviour
                 EquipmentWindow.SetActive(true);
                 in_inventory = true;
             }
+            /*Run check*/
+            IsRunning();
 
+            /*Crouch check*/
+            IsCrouching();
+
+            /*Jump Check*/
+            Jump();
+
+            /*Move Checkers*/
+            Forward();
+            Backwards();
+            Left();
+            Right();
+
+            /*Attacks*/
+            IsAttacking();
+
+            /*Swim*/
+            Is_Swimming();
+
+            /*Interaction*/
+
+            if (npc_trigger)
+            {
+                npcInteract.SetActive(true);
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    print("Hello traveller!");
+                }
+            }
+            else
+            {
+                npcInteract.SetActive(false);
+            }
+            MovePlayerCamera();
         }
         else
         {
@@ -157,7 +157,6 @@ public class Animator_Player : MonoBehaviour
                 EquipmentWindow.SetActive(false);
                 in_inventory = false;
             }
-
         }
 
         /*save&load*/
@@ -171,7 +170,6 @@ public class Animator_Player : MonoBehaviour
             characterContoller.Move(velocity * Time.deltaTime);
         }
 
-        MovePlayerCamera();
 
     }
 
