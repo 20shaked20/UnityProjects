@@ -15,9 +15,12 @@ MonoBehaviour:
   avatar: {fileID: 0}
   speakerName: Merchant John
   sentences:
+  - bla
+  - Welcome! for information press continue.
   - Hello Traveller, Welcome to Brigdeburk
   - "If you are looking for rumors, \nvisit the nearest inn, talk to Brook."
   clips:
+  - {fileID: 8300000, guid: 3fc932e1d87fd0a41950a0fb032575dc, type: 3}
   - {fileID: 8300000, guid: 1a0c32b0ef7b71d429b042a65a231c16, type: 3}
   - {fileID: 8300000, guid: d5c9d4068b683d64c9fb2a4125588d35, type: 3}
   speakerPrefab: {fileID: 3339443549590233518, guid: 92d0fdba2285db34d8b8a5bca7f0ed9b, type: 3}

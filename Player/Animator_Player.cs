@@ -42,13 +42,13 @@ public class Animator_Player : MonoBehaviour
     /*show inventory*/
     private bool in_inventory = false;
     [SerializeField] private GameObject InventoryWindow;
-    [SerializeField] private GameObject EquipmentWindow;
+    // [SerializeField] private GameObject EquipmentWindow;
 
     /*npc handle */
-    private GameObject npc_object;
-    private bool npc_trigger;
+    // private GameObject npc_object;
+    // private bool npc_trigger;
 
-    [SerializeField] private GameObject npcInteract;
+    // [SerializeField] private GameObject npcInteract;
 
     /*temp fix for jump when starting the game*/
     private bool first_time = false;
@@ -65,7 +65,7 @@ public class Animator_Player : MonoBehaviour
 
         /*startups for setting false objects*/
         InventoryWindow.SetActive(false);
-        EquipmentWindow.SetActive(false);
+        // EquipmentWindow.SetActive(false);
     }
 
     private void MovePlayerCamera()
@@ -108,7 +108,7 @@ public class Animator_Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.B))
             {
                 InventoryWindow.SetActive(true);
-                EquipmentWindow.SetActive(true);
+                // EquipmentWindow.SetActive(true);
                 in_inventory = true;
             }
             /*Run check*/
@@ -134,19 +134,19 @@ public class Animator_Player : MonoBehaviour
 
             /*Interaction*/
 
-            if (npc_trigger)
-            {
-                npcInteract.SetActive(true);
+            // if (npc_trigger)
+            // {
+            //     npcInteract.SetActive(true);
 
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    print("Hello traveller!");
-                }
-            }
-            else
-            {
-                npcInteract.SetActive(false);
-            }
+            //     if (Input.GetKeyDown(KeyCode.E))
+            //     {
+            //         print("Hello traveller!");
+            //     }
+            // }
+            // else
+            // {
+            //     npcInteract.SetActive(false);
+            // }
             MovePlayerCamera();
         }
         else
@@ -154,7 +154,7 @@ public class Animator_Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.B))
             {
                 InventoryWindow.SetActive(false);
-                EquipmentWindow.SetActive(false);
+                // EquipmentWindow.SetActive(false);
                 in_inventory = false;
             }
         }
@@ -359,11 +359,11 @@ public class Animator_Player : MonoBehaviour
         }
 
         /*npc interaction*/
-        if (other.tag == "Enemy")
-        {
-            npc_trigger = true;
-            npc_object = other.gameObject;
-        }
+        // if (other.tag == "NPC")
+        // {
+        //     npc_trigger = true;
+        //     npc_object = other.gameObject;
+        // }
 
         /*swimming*/
         if (other.tag == "Water")
@@ -377,11 +377,11 @@ public class Animator_Player : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         /*if we done with npc*/
-        if (other.tag == "Enemy")
-        {
-            npc_trigger = false;
-            npc_object = null;
-        }
+        // if (other.tag == "NPC")
+        // {
+        //     npc_trigger = false;
+        //     npc_object = null;
+        // }
 
         /*swimming done*/
         if (other.tag == "Water")
