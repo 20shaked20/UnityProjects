@@ -23,13 +23,13 @@ public class Animator_Player : MonoBehaviour
 
     /*movement*/
     private Vector2 PlayerMouseInput;
-    private Vector3 movementDirection;
+    public Vector3 movementDirection;
     private Animator animator;
     private CharacterController characterContoller;
     private float yspeed;
     private float originalStepOffset;
     private bool isJumping;
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isFalling;
     private bool isRunning;
     private bool isCrouching;
@@ -42,13 +42,6 @@ public class Animator_Player : MonoBehaviour
     /*show inventory*/
     private bool in_inventory = false;
     [SerializeField] private GameObject InventoryWindow;
-    // [SerializeField] private GameObject EquipmentWindow;
-
-    /*npc handle */
-    // private GameObject npc_object;
-    // private bool npc_trigger;
-
-    // [SerializeField] private GameObject npcInteract;
 
     /*temp fix for jump when starting the game*/
     private bool first_time = false;
@@ -65,16 +58,32 @@ public class Animator_Player : MonoBehaviour
 
         /*startups for setting false objects*/
         InventoryWindow.SetActive(false);
-        // EquipmentWindow.SetActive(false);
     }
 
     private void MovePlayerCamera()
     {
+        /*using right click, will rotate mouse*/
+        if(Input.GetMouseButton(1))
+        {
+             
+        //     transform.eulerAngles += Sensitivty * new Vector3( -Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"),0) ; 
+           
+        //     // transform.Rotate(transform.up ,-Input.GetAxis("Mouse X") * Sensitivty  ); //1
+        // }
+        // else if(isGrounded && movementDirection== Vector3.zero)
+        // {
+        //     /*case where not moving, only rotating the camera towards player*/
+        //     PlayerCamera.transform.eulerAngles += Sensitivty * new Vector3( -Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"),0) ; 
+        // }
+        /*old*/
 
         xRotation -= PlayerMouseInput.y * Sensitivty;
+        
 
         transform.Rotate(0f, PlayerMouseInput.x * Sensitivty, 0f);
-        PlayerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        // PlayerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        }
+
     }
 
     // Update is called once per frame
@@ -108,7 +117,6 @@ public class Animator_Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.B))
             {
                 InventoryWindow.SetActive(true);
-                // EquipmentWindow.SetActive(true);
                 in_inventory = true;
             }
             /*Run check*/
@@ -132,21 +140,6 @@ public class Animator_Player : MonoBehaviour
             /*Swim*/
             Is_Swimming();
 
-            /*Interaction*/
-
-            // if (npc_trigger)
-            // {
-            //     npcInteract.SetActive(true);
-
-            //     if (Input.GetKeyDown(KeyCode.E))
-            //     {
-            //         print("Hello traveller!");
-            //     }
-            // }
-            // else
-            // {
-            //     npcInteract.SetActive(false);
-            // }
             MovePlayerCamera();
         }
         else
@@ -154,7 +147,6 @@ public class Animator_Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.B))
             {
                 InventoryWindow.SetActive(false);
-                // EquipmentWindow.SetActive(false);
                 in_inventory = false;
             }
         }
@@ -190,6 +182,7 @@ public class Animator_Player : MonoBehaviour
         if (isSwimming)
         {
             /*do something with gravity*/
+            yspeed/=2;
         }
     }
 
