@@ -1,15 +1,15 @@
 using UnityEngine;
- 
+
 public class Follow_Target : MonoBehaviour
 {
     public Camera Camera;
     public Transform Target;
     public float Damping;
     public Vector3 ScreenSpaceOffset;
- 
+
     Vector3 m_CurrentVelocity;
     Vector3 m_DampedPos;
- 
+
     void OnEnable()
     {
         if (Camera == null)
@@ -17,7 +17,7 @@ public class Follow_Target : MonoBehaviour
         if (Target != null)
             m_DampedPos = Target.position;
     }
- 
+
     void LateUpdate()
     {
         if (Target != null)

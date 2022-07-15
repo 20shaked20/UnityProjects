@@ -24,6 +24,8 @@ public class Animator_Player : MonoBehaviour
     /*movement*/
     private Vector2 PlayerMouseInput;
     public Vector3 movementDirection;
+    private Transform follow_target;
+
     private Animator animator;
     private CharacterController characterContoller;
     private float yspeed;
@@ -35,9 +37,11 @@ public class Animator_Player : MonoBehaviour
     private bool isCrouching;
     private bool isAttacking;
     private bool isSwimming;
+    private bool isMoving;
     private float lastGroundedTime;
     private float jumpButtonPressedTime;
     private float xRotation;
+    
 
     /*show inventory*/
     private bool in_inventory = false;
@@ -56,6 +60,8 @@ public class Animator_Player : MonoBehaviour
 
         originalStepOffset = characterContoller.stepOffset;
 
+        follow_target = transform.GetChild(2); /* get follow target*/
+
         /*startups for setting false objects*/
         InventoryWindow.SetActive(false);
     }
@@ -63,25 +69,21 @@ public class Animator_Player : MonoBehaviour
     private void MovePlayerCamera()
     {
         /*using right click, will rotate mouse*/
-        if(Input.GetMouseButton(1))
+        if (movementDirection != Vector3.zero)
         {
-             
-        //     transform.eulerAngles += Sensitivty * new Vector3( -Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"),0) ; 
-           
-        //     // transform.Rotate(transform.up ,-Input.GetAxis("Mouse X") * Sensitivty  ); //1
-        // }
-        // else if(isGrounded && movementDirection== Vector3.zero)
-        // {
-        //     /*case where not moving, only rotating the camera towards player*/
-        //     PlayerCamera.transform.eulerAngles += Sensitivty * new Vector3( -Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"),0) ; 
-        // }
-        /*old*/
+            xRotation -= PlayerMouseInput.y * Sensitivty;
+            transform.Rotate(0f, PlayerMouseInput.x * Sensitivty, 0f);
+        }
+        else
+        {
+            /*revert camera to look behind player*/
+            // PlayerCamera.position = transform.position;
+            // PlayerCamera.rotation = transform.rotation;
 
-        xRotation -= PlayerMouseInput.y * Sensitivty;
-        
-
-        transform.Rotate(0f, PlayerMouseInput.x * Sensitivty, 0f);
-        // PlayerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            //position movement
+            PlayerCamera.position = Vector3.Lerp (PlayerCamera.position, follow_target.position, (1f * Time.deltaTime));
+            // rotation movement
+            PlayerCamera.rotation = Quaternion.Lerp (PlayerCamera.rotation, follow_target.rotation, (1f * Time.deltaTime));
         }
 
     }
@@ -182,7 +184,7 @@ public class Animator_Player : MonoBehaviour
         if (isSwimming)
         {
             /*do something with gravity*/
-            yspeed/=2;
+            yspeed /= 2;
         }
     }
 
@@ -191,10 +193,12 @@ public class Animator_Player : MonoBehaviour
         if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.W))
         {
             animator.SetBool("Forward", true);
+            // isMoving = true;
         }
         else
         {
             animator.SetBool("Forward", false);
+            // isMoving = false;
         }
     }
 
@@ -203,10 +207,12 @@ public class Animator_Player : MonoBehaviour
         if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.S))
         {
             animator.SetBool("Backwards", true);
+            // isMoving = true;
         }
         else
         {
             animator.SetBool("Backwards", false);
+            // isMoving = false;
         }
     }
 
@@ -215,10 +221,12 @@ public class Animator_Player : MonoBehaviour
         if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.A))
         {
             animator.SetBool("Left", true);
+            // isMoving = true;
         }
         else
         {
             animator.SetBool("Left", false);
+            // isMoving = false;
         }
     }
 
@@ -227,10 +235,12 @@ public class Animator_Player : MonoBehaviour
         if (movementDirection != Vector3.zero && Input.GetKey(KeyCode.D))
         {
             animator.SetBool("Right", true);
+            // isMoving = true;
         }
         else
         {
             animator.SetBool("Right", false);
+            // isMoving = false;
         }
     }
 
@@ -242,6 +252,8 @@ public class Animator_Player : MonoBehaviour
             Vector3 velocity = characterContoller.velocity * RunSpeed;
 
             characterContoller.SimpleMove(velocity);
+
+            // isMoving = true;
 
         }
         else
