@@ -41,7 +41,7 @@ public class Animator_Player : MonoBehaviour
     private float lastGroundedTime;
     private float jumpButtonPressedTime;
     private float xRotation;
-    
+
 
     /*show inventory*/
     private bool in_inventory = false;
@@ -81,9 +81,9 @@ public class Animator_Player : MonoBehaviour
             // PlayerCamera.rotation = transform.rotation;
 
             //position movement
-            PlayerCamera.position = Vector3.Lerp (PlayerCamera.position, follow_target.position, (1f * Time.deltaTime));
+            PlayerCamera.position = Vector3.Lerp(PlayerCamera.position, follow_target.position, (1f * Time.deltaTime));
             // rotation movement
-            PlayerCamera.rotation = Quaternion.Lerp (PlayerCamera.rotation, follow_target.rotation, (1f * Time.deltaTime));
+            PlayerCamera.rotation = Quaternion.Lerp(PlayerCamera.rotation, follow_target.rotation, (1f * Time.deltaTime));
         }
 
     }
@@ -112,6 +112,7 @@ public class Animator_Player : MonoBehaviour
         {
             lastGroundedTime = Time.time;
         }
+
 
         /*pop up inv window*/
         if (!in_inventory)
@@ -156,13 +157,17 @@ public class Animator_Player : MonoBehaviour
         /*save&load*/
         Save_Load();
 
+        /*in air check*/
         if (isGrounded == false)
         {
+
             Vector3 velocity = movementDirection * inputMagnitude * jumpHorizontalSpeed;
             velocity.y = yspeed;
 
             characterContoller.Move(velocity * Time.deltaTime);
         }
+
+        
 
 
     }
@@ -181,11 +186,20 @@ public class Animator_Player : MonoBehaviour
 
     private void Is_Swimming()
     {
-        if (isSwimming)
-        {
-            /*do something with gravity*/
-            yspeed /= 2;
-        }
+        float speed = 1f;
+        // if (isSwimming)
+        // {
+            float translation = Input.GetAxis("Vertical") * speed;
+            float straffe = Input.GetAxis("Horizontal") * speed;
+
+            // adjust the speed accordingly. with the modification , it was super fast for me.
+            // notice there is no limit on how far you can go :)
+            float swimY = Input.GetAxis("Mouse Y") * speed * 2f;
+            translation *= Time.deltaTime;
+            straffe *= Time.deltaTime;
+
+            transform.Translate(straffe, swimY, translation);
+        // }
     }
 
     private void Forward()
@@ -363,13 +377,6 @@ public class Animator_Player : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-        /*npc interaction*/
-        // if (other.tag == "NPC")
-        // {
-        //     npc_trigger = true;
-        //     npc_object = other.gameObject;
-        // }
-
         /*swimming*/
         if (other.tag == "Water")
         {
@@ -381,12 +388,6 @@ public class Animator_Player : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        /*if we done with npc*/
-        // if (other.tag == "NPC")
-        // {
-        //     npc_trigger = false;
-        //     npc_object = null;
-        // }
 
         /*swimming done*/
         if (other.tag == "Water")

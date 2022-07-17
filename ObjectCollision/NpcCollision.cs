@@ -51,8 +51,6 @@ public class NpcCollision : MonoBehaviour
         {
             npc_trigger = false;
             npc_chat_area.SetActive(false);
-            dialogue.dialogueIndex = 0;
-            dialogue.sentenceIndex = 0;
         }
 
     }
